@@ -53,7 +53,52 @@ class CRM_Civigif_Page_CiviGif extends CRM_Core_Page {
     public function run() {
         // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
         CRM_Utils_System::setTitle(E::ts('CiviGif - Testing'));
-        $this::generate_image();
+        //$this::generate_image();
+        $result = civicrm_api3('Contribution', 'get', array(
+            'sequential' => 1,
+            'return' => array("total_amount", "receive_date"),
+            'options' => array('limit' => 10),
+            'api.Contact.getsingle' => array('return' => array("first_name")),
+        ));
+        //kpr(var_export($result));
+        
+        if ($result['is_error'] !=0) {
+            die("Api Error");            
+        }
+
+        $now = new DateTime();
+        foreach ($result['values'] as $contribution) {
+
+            $time_since = $now->diff(new DateTime($contribution['receive_date']));
+            
+            $diff_str = [];
+            
+            $format_order = [
+                ["y", "year"],
+                ["m", "minute"],
+                ["d", "day"],
+                ["h", "hour"],
+                ["i", "minute"],
+                ["s", "second"],
+            ];
+            
+            foreach ($format_order as $key) {
+                $component = $time_since->{$key[0]};
+                if ($component > 0) {                    
+                    if ($component > 1){
+                        $diff_str[]=  $time_since->{$key[0]} . " " . $key[1] ."s";
+                    }                    
+                    else {
+                        $diff_str[]=  $time_since->{$key[0]} . " " . $key[1];
+                    }                        
+                }
+            }
+            $diff_str = implode(" ", $diff_str);            
+            $out_string =  $diff_str . ' ' . $contribution['api.Contact.getsingle']['first_name'] . "  ($" . $contribution['total_amount'] . ")";
+            kpr($out_string);
+        }
+            
+            
         parent::run();
     }
 
