@@ -92,7 +92,7 @@ class CRM_Civigif_Page_CiviGif extends CRM_Core_Page {
                 ["i", "minute"],
                 ["s", "second"],
             ];
-            
+           
             foreach ($format_order as $key) {
                 $component = $time_since->{$key[0]};
                 if ($component > 0) {                    
@@ -103,9 +103,12 @@ class CRM_Civigif_Page_CiviGif extends CRM_Core_Page {
                         $diff_str[]=  $time_since->{$key[0]} . " " . $key[1];
                     }                        
                 }
+                if (sizeof($diff_str) >= 2) {
+                    break;
+                }
             }
             $diff_str = implode(" ", $diff_str);            
-            $out_string =  $diff_str . ' ' . $contribution['api.Contact.getsingle']['first_name'] . "  ($" . $contribution['total_amount'] . ")";
+            $out_string =  $contribution['api.Contact.getsingle']['first_name'] . " " . $diff_str . "  $" . $contribution['total_amount'] ;
             $lines[] = $out_string;
         }
         $this::generate_image( $lines);
