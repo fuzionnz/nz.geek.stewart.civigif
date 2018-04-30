@@ -27,7 +27,7 @@ class CRM_Civigif_Page_CiviGif extends CRM_Core_Page {
         
             $draw = new ImagickDraw();
             $draw->setFillColor('black');
-            $font_path = CRM_Core_Resources::singleton()->getPath('nz.geek.stewart.civigif') . "/fonts/RobotoCondensed-Light.ttf";
+            $font_path = E::path("fonts/RobotoCondensed-Light.ttf");
             $draw->setFont($font_path);
             $draw->setFontSize( 30 );
 
@@ -56,8 +56,6 @@ class CRM_Civigif_Page_CiviGif extends CRM_Core_Page {
             $final_image->setImageIterations(0); //loop forever
             $final_image->mergeImageLayers(\Imagick::LAYERMETHOD_OPTIMIZEPLUS);
             $final_image->writeImages($image_path, TRUE);
-    
-
         }
     }
 
