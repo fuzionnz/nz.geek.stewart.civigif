@@ -27,7 +27,8 @@ class CRM_Civigif_Page_CiviGif extends CRM_Core_Page {
         
             $draw = new ImagickDraw();
             $draw->setFillColor('black');
-            $draw->setFont('Bookman-DemiItalic');
+            $font_path = CRM_Core_Resources::singleton()->getPath('nz.geek.stewart.civigif') . "/fonts/RobotoCondensed-Light.ttf";
+            $draw->setFont($font_path);
             $draw->setFontSize( 30 );
 
             $background = new ImagickPixel('white');
