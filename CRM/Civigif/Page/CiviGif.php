@@ -39,7 +39,7 @@ class CRM_Civigif_Page_CiviGif extends CRM_Core_Page {
                 $frames[$i]->newImage($width,$height, $background);
                 $added = FALSE;
                 for ($j = $i; $j>=0 && $i - $j < 5 ; $j--) {
-                    $frames[$i]->annotateImage($draw, 10, 45 + ($i-$j)*40, 0, $lines[$j]);
+                    $frames[$i]->annotateImage($draw, 10, 45 + ($i-$j)*40, 0, "{$lines[$j]['name']} \${$lines[$j]['amount']} {$lines[$j]['time']} ago");
                     $added = TRUE;
                 }
                 if ($added) {
@@ -92,7 +92,7 @@ class CRM_Civigif_Page_CiviGif extends CRM_Core_Page {
                 ["i", "minute"],
                 ["s", "second"],
             ];
-           
+
             foreach ($format_order as $key) {
                 $component = $time_since->{$key[0]};
                 if ($component > 0) {                    
@@ -107,9 +107,12 @@ class CRM_Civigif_Page_CiviGif extends CRM_Core_Page {
                     break;
                 }
             }
-            $diff_str = implode(" ", $diff_str);            
-            $out_string =  $contribution['api.Contact.getsingle']['first_name'] . " " . $diff_str . "  $" . $contribution['total_amount'] ;
-            $lines[] = $out_string;
+
+            $lines[] = [
+                'name'=> $contribution['api.Contact.getsingle']['first_name'],
+                'time' => implode(" ", $diff_str),
+                'amount' => $contribution['total_amount'],
+            ];
         }
         $this::generate_image( $lines);
         
