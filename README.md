@@ -1,3 +1,7 @@
+THIS IS A WIP. Found for thinking about https://redmine.fuzion.co.nz/issues/30409
+
+No idea whether this was working. Install on dev environment only. Can't remember how well this was working when I last left it.
+
 # nz.geek.stewart.civigif
 
 ![Screenshot](/images/screenshot.png)
